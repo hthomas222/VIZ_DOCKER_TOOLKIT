@@ -74,12 +74,8 @@ def main():
     table.add_column(
         "[green]Image[/green]", justify="right", style="cyan", no_wrap=True
     )
-    table.add_column(
-        "[green]Name[/green]", justify="right", style="cyan", no_wrap=True
-    )
-    table.add_column(
-        "[green]Port[/green]", justify="right", style="cyan", no_wrap=True
-    )
+    table.add_column("[green]Name[/green]", justify="right", style="cyan", no_wrap=True)
+    table.add_column("[green]Port[/green]", justify="right", style="cyan", no_wrap=True)
     table.add_column(
         "[green]Additional Port[/green]",
         justify="right",
