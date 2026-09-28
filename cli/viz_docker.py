@@ -60,7 +60,10 @@ def main():
     data = docker_ps()
     table = Table(title="Docker PS INFO", title_style="white")
     table.add_column(
-        "[green]Container_ID[/green]", justify="right", style="cyan", no_wrap=True
+        "[green]Container_ID[/green]",
+        justify="right",
+        style="cyan",
+        no_wrap=True,
     )
     table.add_column(
         "[green]Image[/green]", justify="right", style="cyan", no_wrap=True
@@ -72,7 +75,10 @@ def main():
         "[green]Port[/green]", justify="right", style="cyan", no_wrap=True
     )
     table.add_column(
-        "[green]Additional Port[/green]", justify="right", style="cyan", no_wrap=True
+        "[green]Additional Port[/green]",
+        justify="right",
+        style="cyan",
+        no_wrap=True,
     )
 
     for row in data:

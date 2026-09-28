@@ -87,7 +87,9 @@ def system():
     output = ""
     if request.method == "POST":
         command = subprocess.run(
-            ["docker", "system", "prune", "-f"], capture_output=True, text=True
+            ["docker", "system", "prune", "-f"],
+            capture_output=True,
+            text=True,
         )
         output = command.stdout + command.stderr
         if command.returncode != 0:
