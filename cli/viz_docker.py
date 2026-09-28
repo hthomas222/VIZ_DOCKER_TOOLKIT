@@ -1,4 +1,4 @@
-import os
+import subprocess
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -16,10 +16,15 @@ ART = """
 
 
 def docker_ps():
-    """Fetches and parses docker ps command output."""
-    command = 'docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"'
-    output = os.popen(command).read().strip()
-    lines = output.split("\n")[1:]  # Skip header line
+    """Fetches and parses docker ps command output safely using subprocess."""
+    cmd = [
+        "docker",
+        "ps",
+        "--format",
+        "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}",
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    lines = result.stdout.strip().split("\n")[1:]  # Skip header line
     nested_data = []
     for line in lines:
         if line.strip():
@@ -29,13 +34,16 @@ def docker_ps():
 
 
 def docker_system_df():
-    """Fetches and parses docker system df command output."""
-    command = (
-        "docker system df --format "
-        '"table {{.Type}}\t{{.TotalCount}}\t{{.Active}}\t{{.Size}}"'
-    )
-    output = os.popen(command).read().strip()
-    lines = output.split("\n")[1:]  # Skip header line
+    """Fetches and parses docker system df command output safely using subprocess."""
+    cmd = [
+        "docker",
+        "system",
+        "df",
+        "--format",
+        "table {{.Type}}\t{{.TotalCount}}\t{{.Active}}\t{{.Size}}",
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    lines = result.stdout.strip().split("\n")[1:]  # Skip header line
     data = []
     for line in lines:
         if line.strip():
@@ -66,8 +74,12 @@ def main():
     table.add_column(
         "[green]Image[/green]", justify="right", style="cyan", no_wrap=True
     )
-    table.add_column("[green]Name[/green]", justify="right", style="cyan", no_wrap=True)
-    table.add_column("[green]Port[/green]", justify="right", style="cyan", no_wrap=True)
+    table.add_column(
+        "[green]Name[/green]", justify="right", style="cyan", no_wrap=True
+    )
+    table.add_column(
+        "[green]Port[/green]", justify="right", style="cyan", no_wrap=True
+    )
     table.add_column(
         "[green]Additional Port[/green]",
         justify="right",
