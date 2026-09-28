@@ -63,7 +63,7 @@ jobs:
       - name: Scan Code for Security Flaws (Bandit)
         run: |
           # B602/B603/B607 are skipped since subprocess calls are intentionally used for docker commands
-          bandit -r . -sk B602,B603,B607 -ll
+          bandit -r . -s B602,B603,B607 -ll
 
       - name: Audit Third-Party Dependencies (pip-audit)
         run: |
