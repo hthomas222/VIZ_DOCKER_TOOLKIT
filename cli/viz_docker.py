@@ -17,9 +17,7 @@ ART = """
 
 def docker_ps():
     """Fetches and parses docker ps command output."""
-    command = (
-        'docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"'
-    )
+    command = 'docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"'
     output = os.popen(command).read().strip()
     lines = output.split("\n")[1:]  # Skip header line
     nested_data = []
@@ -68,12 +66,8 @@ def main():
     table.add_column(
         "[green]Image[/green]", justify="right", style="cyan", no_wrap=True
     )
-    table.add_column(
-        "[green]Name[/green]", justify="right", style="cyan", no_wrap=True
-    )
-    table.add_column(
-        "[green]Port[/green]", justify="right", style="cyan", no_wrap=True
-    )
+    table.add_column("[green]Name[/green]", justify="right", style="cyan", no_wrap=True)
+    table.add_column("[green]Port[/green]", justify="right", style="cyan", no_wrap=True)
     table.add_column(
         "[green]Additional Port[/green]",
         justify="right",

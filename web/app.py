@@ -26,9 +26,7 @@ def index():
 def images():
     output = ""
     if request.method == "POST":
-        command = subprocess.run(
-            ["docker", "images"], capture_output=True, text=True
-        )
+        command = subprocess.run(["docker", "images"], capture_output=True, text=True)
         output = command.stdout + command.stderr
         if command.returncode != 0:
             output = f"Error (code {command.returncode}):\n{output}"
