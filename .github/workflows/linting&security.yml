@@ -11,6 +11,8 @@ jobs:
   linting:
     name: Code Formatting & Linting
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for auto-committing formatted code back to repo
 
     steps:
       - name: Checkout Code
@@ -26,9 +28,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install rich flask flake8 black
 
-      - name: Check Formatting with Black
+      - name: Format Code with Black
         run: |
-          black --check .
+          black .
+
+      - name: Commit Formatting Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-format code with black [skip ci]"
 
       - name: Lint Code with Flake8
         run: |
