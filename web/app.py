@@ -1,92 +1,98 @@
-from flask import Flask, render_template, request
 import subprocess
-
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route("/", methods=["GET", "POST"])
 def index():
     output = ""
-    if request.method == 'POST':
-        command = subprocess.run(["docker", "ps", "-a", "--format", "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"], capture_output=True, text=True)
+    if request.method == "POST":
+        cmd = [
+            "docker",
+            "ps",
+            "-a",
+            "--format",
+            "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}",
+        ]
+        command = subprocess.run(cmd, capture_output=True, text=True)
         output = command.stdout + command.stderr
         if command.returncode != 0:
             output = f"Error (code {command.returncode}):\n{output}"
-    return render_template('index.html', active_page='index', context=output)
+    return render_template("index.html", active_page="index", output=output)
 
 
-@app.route('/images', methods=['GET', 'POST'])
+@app.route("/images", methods=["GET", "POST"])
 def images():
     output = ""
-    if request.method == 'POST':
+    if request.method == "POST":
         command = subprocess.run(
-            ["docker", "images"], 
-            capture_output=True, text=True
+            ["docker", "images"], capture_output=True, text=True
         )
         output = command.stdout + command.stderr
         if command.returncode != 0:
             output = f"Error (code {command.returncode}):\n{output}"
-    return render_template('images.html', active_page='images', output=output)
+    return render_template("images.html", active_page="images", output=output)
 
-@app.route('/df', methods=['GET', 'POST'])
+
+@app.route("/df", methods=["GET", "POST"])
 def df():
     output = ""
-    if request.method == 'POST':
+    if request.method == "POST":
         command = subprocess.run(
-            ["docker", "system", "df"], 
-            capture_output=True, text=True
+            ["docker", "system", "df"], capture_output=True, text=True
         )
         output = command.stdout + command.stderr
         if command.returncode != 0:
             output = f"Error (code {command.returncode}):\n{output}"
-    return render_template('df.html', active_page='df', output=output)
+    return render_template("df.html", active_page="df", output=output)
 
-@app.route('/start', methods=['GET', 'POST'])
+
+@app.route("/start", methods=["GET", "POST"])
 def start():
     output = ""
-    if request.method == 'POST':
-        container_id = request.form.get('container_id')
+    if request.method == "POST":
+        container_id = request.form.get("container_id")
         if container_id:
             command = subprocess.run(
                 ["docker", "start", container_id],
                 capture_output=True,
-                text=True
+                text=True,
             )
             output = command.stdout + command.stderr
             if command.returncode != 0:
                 output = f"Error (code {command.returncode}):\n{output}"
-    return render_template('start.html', active_page='start', output=output)
+    return render_template("start.html", active_page="start", output=output)
 
 
-@app.route('/stop', methods=['GET', 'POST'])
+@app.route("/stop", methods=["GET", "POST"])
 def stop():
     output = ""
-    if request.method == 'POST':
-        container_id = request.form.get('container_id')
+    if request.method == "POST":
+        container_id = request.form.get("container_id")
         if container_id:
             command = subprocess.run(
                 ["docker", "stop", container_id],
                 capture_output=True,
-                text=True
+                text=True,
             )
             output = command.stdout + command.stderr
             if command.returncode != 0:
                 output = f"Error (code {command.returncode}):\n{output}"
-    return render_template('stop.html', active_page='stop')
+    return render_template("stop.html", active_page="stop", output=output)
 
 
-@app.route('/system', methods=['GET', 'POST'])
+@app.route("/system", methods=["GET", "POST"])
 def system():
     output = ""
-    if request.method == 'POST':
+    if request.method == "POST":
         command = subprocess.run(
-            ["docker", "system", "prune", "-f"], 
-            capture_output=True, text=True
+            ["docker", "system", "prune", "-f"], capture_output=True, text=True
         )
         output = command.stdout + command.stderr
         if command.returncode != 0:
             output = f"Error (code {command.returncode}):\n{output}"
-    return render_template('system.html', active_page='system', output=output)
+    return render_template("system.html", active_page="system", output=output)
 
 
 if __name__ == "__main__":
